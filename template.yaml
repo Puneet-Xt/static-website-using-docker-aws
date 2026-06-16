@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS Project: Deploy Docker Website on t3.micro with S3 Access and CloudWatch Monitoring'
+
+Resources:
+  # 1. IAM Role for EC2 to Access S3 Securely
+  EC2S3ReadRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess'
+
+  # 2. IAM Instance Profile linked to the Role
+  EC2InstanceProfile:
+    Type: 'AWS::IAM::InstanceProfile'
+    Properties:
+      Roles:
+        - Ref: EC2S3ReadRole
+
+  # 3. Security Group Setup (Ports 80 and 22 Open)
+  WebServerSecurityGroup:
+    Type: 'AWS::EC2::SecurityGroup'
+    Properties:
+      GroupDescription: 'Enable HTTP and SSH access'
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  # 4. EC2 Instance (t3.micro) with IAM Profile & Docker Setup
+  MyEC2Instance:
+    Type: 'AWS::EC2::Instance'
+    Properties:
+      InstanceType: t3.micro
+      ImageId: ami-080e1f13689e07408 # Ubuntu 22.04 LTS (us-east-1)
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      SecurityGroups:
+        - Ref: WebServerSecurityGroup
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # System updates and Docker/AWS CLI installation
+          apt-get update -y
+          apt-get install -y docker.io awscli
+          systemctl start docker
+          systemctl enable docker
+
+          # Create directory for website files on host machine
+          mkdir -p /home/ubuntu/website
+          chmod 755 /home/ubuntu/website
+          
+          # Securely Download index.html from your S3 bucket
+          aws s3 cp s3://cloudops-website-bucket/index.html /home/ubuntu/website/index.html
+          chmod 644 /home/ubuntu/website/index.html
+
+          # Run Nginx Docker Container properly mapped to host directory
+          docker run -d -p 80:80 --name static-website-server -v /home/ubuntu/website:/usr/share/nginx/html nginx
+
+  # 5. CloudWatch Alarm for CPU Monitoring
+  CPUAlarm:
+    Type: 'AWS::CloudWatch::Alarm'
+    Properties:
+      AlarmDescription: 'Alarm if CPU exceeds 70% for 2 minutes'
+      MetricName: CPUUtilization
+      Namespace: AWS/EC2
+      Statistic: Average
+      Period: 60
+      EvaluationPeriods: 2
+      Threshold: 70
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: InstanceId
+          Value: !Ref MyEC2Instance
+      AlarmActions:
+        - 'arn:aws:sns:us-east-1:696740771647:SW-Server-CPU-Alert'
