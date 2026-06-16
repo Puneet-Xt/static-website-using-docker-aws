@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud & DevOps Enterprise Solutions</title>
+    <style>
+        /* --- GLOBAL STYLES & RESET --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* --- NAVIGATION BAR --- */
+        header {
+            background-color: #1a1a2e;
+            color: #fff;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff9900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: 25px;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #ff9900;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 180px 20px 100px 20px;
+            text-align: center;
+        }
+
+        .hero-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .hero h1 span {
+            color: #ff9900;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            color: #e2e2e2;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ff9900;
+            color: #fff;
+            padding: 12px 30px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: background 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #e68a00;
+        }
+
+        /* --- SECTION STRUCTURE --- */
+        section {
+            padding: 80px 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            position: relative;
+            color: #1a1a2e;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background-color: #ff9900;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* --- SERVICES SECTION --- */
+        .services-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-box {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .service-box:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-icon {
+            font-size: 40px;
+            color: #ff9900;
+            margin-bottom: 20px;
+        }
+
+        .service-box h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #16213e;
+        }
+
+        /* --- STATS ACCORDION SECTION --- */
+        .stats-section {
+            background-color: #16213e;
+            color: #fff;
+        }
+
+        .stats-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        .stat-item {
+            padding: 20px;
+            min-width: 200px;
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: bold;
+            color: #ff9900;
+            margin-bottom: 5px;
+        }
+
+        /* --- PRICING SECTION --- */
+        .pricing-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .price-card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border: 1px solid #e2e2e2;
+            position: relative;
+        }
+
+        .price-card.featured {
+            border: 2px solid #ff9900;
+            transform: scale(1.05);
+        }
+
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff9900;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 3px;
+        }
+
+        .price-card h3 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+        }
+
+        .price span {
+            font-size: 16px;
+            color: #777;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .price-features li {
+            padding: 10px 0;
+            border-bottom: 1px solid #f4f4f4;
+        }
+
+        .price-features li::before {
+            content: "✓ ";
+            color: #28a745;
+            font-weight: bold;
+        }
+
+        /* --- CONTACT FORM --- */
+        .contact-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        .form-group textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #1a1a2e;
+            color: #fff;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        /* --- RESPONSIVE DESIGN --- */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+            }
+            .nav-links {
+                margin-top: 15px;
+            }
+            .nav-links li {
+                margin: 0 10px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .price-card.featured {
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="nav-container">
+            <div class="logo">CloudOps Pro</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#pricing">Pricing</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <h1>Automated <span>Docker & AWS</span> Infrastructure</h1>
+            <p>Deploy secure, highly available, and auto-monitored static applications instantaneously with CloudFormation orchestration tools.</p>
+            <a href="#services" class="btn">Explore Capabilities</a>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title">Our Capabilities</h2>
+        <div class="services-grid">
+            <div class="service-box">
+                <div class="service-icon">📦</div>
+                <h3>Docker Containerization</h3>
+                <p>Applications isolated into lightweight packages ensuring seamless execution across diverse target cloud environments.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">📜</div>
+                <h3>Infrastructure as Code</h3>
+                <p>Entire network matrix, servers, and storage layers provisioned deterministically using structured AWS CloudFormation scripts.</p>
+            </div>
+            <div class="service-box">
+                <div class="service-icon">🔔</div>
+                <h3>Proactive Monitoring</h3>
+                <p>Real-time machine statistics compiled via CloudWatch with immediate automated failover notification alerts routing to SNS.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <div class="stats-container">
+            <div class="stat-item">
+                <div class="stat-number">99.99%</div>
+                <p>Guaranteed Uptime</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">2M+</div>
+                <p>Requests Managed</p>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">&lt; 50ms</div>
+                <p>Average Latency</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing">
+        <h2 class="section-title">Deployment Plans</h2>
+        <div class="pricing-grid">
+            <div class="price-card">
+                <h3>Standard Stack</h3>
+                <div class="price">$29<span>/month</span></div>
+                <ul class="price-features">
+                    <li>1 Shared EC2 Instance</li>
+                    <li>Basic Docker Setup</li>
+                    <li>Standard S3 Storage</li>
+                    <li>Daily Log Backups</li>
+                </ul>
+                <a href="#contact" class="btn">Get Started</a>
+            </div>
+            <div class="price-card featured">
+                <div class="badge">Most Popular</div>
+                <h3>Production Scale</h3>
+                <div class="price">$99<span>/month</span></div>
+                <ul class="price-features">
+                    <li>Dedicated Auto-Scaling EC2</li>
+                    <li>Nginx Reverse Proxy Load Balancing</li>
+                    <li>CloudWatch Real-time Metric Monitoring</li>
+                    <li>24/7 SNS Topic Email Alerts</li>
+                </ul>
+                <a href="#contact" class="btn">Deploy Now</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Initiate Deployment</h2>
+        <div class="contact-container">
+            <form action="#" method="POST" onsubmit="event.preventDefault(); alert('Form submitted successfully!');">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" required placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="email">Corporate Email</label>
+                    <input type="email" id="email" required placeholder="john@company.com">
+                </div>
+                <div class="form-group">
+                    <label for="message">Infrastructure Requirements</label>
+                    <textarea id="message" required placeholder="Describe your web traffic requirements..."></textarea>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Submit Request</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 CloudOps Pro Solutions. Managed via AWS CloudFormation & Docker Enterprise Core.</p>
+    </footer>
+
+</body>
+</html>
